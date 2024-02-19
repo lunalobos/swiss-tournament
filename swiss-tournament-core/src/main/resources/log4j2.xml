@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true" name="log4j2">
+    <Appenders>
+
+        <Appender type="Console" name="console" target="SYSTEM_OUT">
+            <Layout type="PatternLayout">
+                <Pattern>%d [%t] %-5p %c - %m%n</Pattern>
+            </Layout>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
+        </Appender>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="console" />
+        </Root>
+    </Loggers>
+</Configuration>

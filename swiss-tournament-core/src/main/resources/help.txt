@@ -1,0 +1,190 @@
+***********************************************************************************************************************
+*************************************** Welcome to the Swiss Tournament Manager! **************************************
+***********************************************************************************************************************
+
+This interface allows you to manage a Swiss-style chess tournament through simple commands.
+
+-----------------------------------------------------------------------------------------------------------------------
+*Available commands
+
+- **add player: <name>** : Adds a player to the tournament.
+
+- **remove player: <name>** : **(Only before starting the tournament)** Removes a player from the tournament.
+
+- **enable player: <name>** : Enables a previously disabled player.
+
+- **disqualify player: <name>** : Disqualifies a player from the tournament. Disqualified players are not paired.
+
+- **start** : Starts the tournament.
+
+- **current round** : Displays the pairings of the current round.
+
+- **score** : Shows the current standings of the tournament.
+
+- **game: <white> - <black> => <outcome>** : Records the outcome of a game (1-0, 0-1, 1/2-1/2 or suspended).
+
+- **redo** : Redoes the last round. This is useful in case you have changed the state of one or more players, or even
+if you added one or more players.
+
+- **help** : Displays this help message.
+
+- **tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN>** : Sets the tiebreakers and the order of priority
+(fromthe left the most important and so on). Tiebreakers has to be always be specified in lower case an there is only
+support for sonneborn berger, recursive performance, black games, progressive, performance, elo and buchholz.
+
+- **iterations: <iterations>** : Set the number of iterations for the recursive performance tiebreaker.
+
+- **config: <configPath>** : Set the path of the config file that specifies tiebreakers preferences in json format.
+
+- **example** : runs an example tournament.
+
+
+**Additional notes
+
+- Enter commands one at a time and press Enter.
+- For more information on Swiss-style tournaments, visit https://en.wikipedia.org/wiki/Swiss-system_tournament
+
+**Example
+
+Imagine you have ten players already added to the tournament: Alice, Bob, Charlie, David, Eve, Frank, Grace, Henry,
+Irene, and Jack.
+
+You start the tournament using `start`. The system generates the first round pairings, for example:
+
+- Round 1:
+
+- Alice vs. Bob
+- Charlie vs. David
+- Eve vs. Frank
+- Grace vs. Henry
+- Irene vs. Jack
+
+Let's say the following games occurred in the first round:
+
+- Alice wins against Bob with a score of 1-0.
+- Charlie wins against David with a score of 1-0.
+- Eve loses against Frank with a score of 0-1.
+- Grace draws with Henry with a score of 1/2-1/2.
+- Irene and Jack's game is suspended.
+
+You record these outcomes using `game` commands:
+
+- game: Alice - Bob => 1-0
+- game: Charlie - David => 1-0
+- game: Eve - Frank => 0-1
+- game: Grace - Henry => 1/2-1/2
+- game: Irene - Jack => suspended
+
+At this point, you can use other commands to see:
+
+- `current round`: This will show the pairings for the next round, based on the results of the previous round.
+- `score`: This will show the current standings of all players based on their points and tiebreaks.
+
+-----------------------------------------------------------------------------------------------------------------------
+*Pairing
+
+The core of the pairing system is based on a priority queue with a comparator that prioritizes players with higher
+scores and more games played with black pieces.
+
+The player with the highest priority according to the mentioned criteria is taken from the priority queue and assigned
+white pieces.
+
+Then, the next highest priority player who has not played against this player is taken and assigned blackpieces.
+The process is repeated until no more pairings can be made.
+
+Players without an opponent get a point, but this does not count as a game and does not affect any tiebreak scores, at
+least not directly.If errors are made when loading the result of a game, the game command can also be used to replace
+this result, as long as it is a game from this round.
+
+In case of having information about players who will be absent, and if the round has not started yet, it is possible to
+disqualify these players with the disqualify command and redo the round with the redo command to avoid pairing them.
+The same applies for players who are reinstated or for any similar situation.
+
+It is also possible to add players between rounds, although this is at the user's discretion as it is not very
+standard to allow this in the Swiss system. For the organization of friendly tournaments, this feature, in combination
+with the disqualify and enable commands, is ideal as it provides great flexibility that would otherwise have to be
+managed manually with pen and paper.
+
+-----------------------------------------------------------------------------------------------------------------------
+*Elo
+
+During the tournament, the players' Elo will change according to the outcome of the matches. This Elo will be recorded
+in a database. This database is not a real database but rather a binary file that stores a map with the players' names
+and their respective Elo. Players loaded for the first time, and whenever the tournament is completed successfully,
+will be saved in the database located at the address indicated in the argument. If it is the first time, there is no
+player database and it is not possible to create it manually since it is a binary file. In this case, a database will
+be created in the same directory as the command window points to, the file will be called players_db.bin.
+
+-----------------------------------------------------------------------------------------------------------------------
+*Tiebreak Systems
+
+Tiebreak systems allow to define the ranking of players with more precision and can be combined with several different
+priority orders.
+
+The supported tiebreak systems are Black Games, Buchholz, Elo, Linear Performance, Progressive, FIDE Performance and
+Sonneborn-Berger.
+
+They can be specified in the desired order of priority with the tiebreakers command, from left to rightthe most
+priority will be the one on the left.For the case of recursive performance, the principle of this system is explained
+below, you can also specify the number of iterations with the iterations command. Keep in mind that a very large number
+of iterations can affect the performance(of the application).	It is also possible to specify the path to a json
+configuration file as a second argument or using the config command. The format of this file is easily understood with
+this example:
+
+{
+	"tiebreakers": ["sonneborn berger", "linear performance", "black games"],
+	"iterations": 5
+}
+
+Keep in mind that the iterations must be indicated even if recursive performance is not used, but obviously they will
+be arbitrary filler data that will have no effect. A number of iterations is required, even if you do not use recursive
+performance, simply to cover all possible cases with the json structure.
+
+**Linear Performance
+
+It is the result of multiplying the player's score by 800, then adding the average elo of the rivals and then
+subtracting 400.
+
+**FIDE Performance
+
+It is similar to linear performance but the straight line is replaced by a slightly more complex function. The FIDE
+performance is the sum of the average plus this function that depends on the player's score.
+
+**Sonneborn-Berger
+
+A player's Sonneborn-Berger score is calculated by adding the score of each defeated opponent and half the conventional
+score of each drawn opponent.
+
+**Progressive
+
+A player's progressive score is calculated by adding the historical score value in each round of the corresponding
+player. This system benefits players with more consistent scores over time, who started winning their games. On the
+other hand, it hurts those who have made comebacks.
+
+**Buchholz
+
+A player's Buchholz score is calculated by adding the score of all opponents except for the score of the first and
+last. It is one of the most used systems.
+
+**Black games
+
+This tiebreak system takes into account the number of games played with black pieces. The more games with black pieces,
+the higher the score. This system benefits those who were more disadvantaged in the color (pieces) distribution. It
+usually makes sense in tournaments of high-level players, where playing with black pieces really implies a
+disadvantage.
+
+**Elo
+
+This tiebreak system simply breaks the tie by the final Elo of each player, that is, the Elo resulting from the
+different matches during the tournament. It benefits those who have beaten opponents with a better Elo than the
+average.
+
+**Default configuration
+If there is no specification for tiebreakers the default configuration is buchholz, black games, linear performance in that
+priority order.
+
+*Version: 1.0.0-ALPHA
+
+*Important: This is an alpha version of the software, so there may be bugs or incomplete functionalities.
+
+**Enjoy!**
