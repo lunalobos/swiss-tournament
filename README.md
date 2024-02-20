@@ -13,33 +13,33 @@ Track player Elo based on match outcomes.
 
 ## Commands
 
-add player: name : Adds a player to the tournament.
+```add player: <name>```: Adds a player to the tournament.
 
-remove player: name : (Only before starting) Removes a player.
+```remove player: <name>```: (Only before starting) Removes a player.
 
-enable player: name : Enables a previously disabled player.
+```enable player: <name>```: Enables a previously disabled player.
 
-disqualify player: name : Disqualifies a player (not paired).
+```disqualify player: <name>```: Disqualifies a player (not paired).
 
-start : Starts the tournament.
+```start```: Starts the tournament.
 
-current round : Displays current round pairings.
+```current round```: Displays current round pairings.
 
-score : Shows current tournament standings.
+```score```: Shows current tournament standings.
 
-game: white - black => outcome : Records game outcome (1-0, 0-1, 1/2-1/2, suspended).
+```game: <white> - <black> => <outcome>```: Records game outcome (1-0, 0-1, 1/2-1/2, suspended).
 
-redo : Redoes the last round (useful for changes or adding players).
+```redo```: Redoes the last round (useful for changes or adding players).
 
-help : Displays this help message.
+```help```: Displays this help message.
 
-tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN> : Sets tiebreakers and order of priority.
+```tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN> ```: Sets tiebreakers and order of priority.
 
-iterations: <iterations> : Set iterations for recursive performance tiebreaker.
+```iterations: <iterations>```: Set iterations for recursive performance tiebreaker.
 
-config: <configPath> : Set path to config file for tiebreakers preferences (json format).
+```config: <configPath>```: Set path to config file for tiebreakers preferences (json format).
 
-example : Runs an example tournament.
+```example```: Runs an example tournament.
 
 ### Additional Notes
 
