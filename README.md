@@ -31,7 +31,7 @@ Track player Elo based on match outcomes.
 
 ```redo```: Redoes the last round (useful for changes or adding players).
 
-```help```: Displays this help message.
+```help```: Displays a help message.
 
 ```tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN> ```: Sets tiebreakers and order of priority.
 
