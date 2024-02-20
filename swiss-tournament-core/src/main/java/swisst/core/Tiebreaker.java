@@ -23,7 +23,7 @@ public enum Tiebreaker {
 	ELO (p -> new BigDecimal(p.getCurrentElo()), 0, "Elo"),
 	LINEAR_PERFORMANCE(p -> TiebreakMetrics.linearPerformance(p), 0, "Linear Perf"),
 	PROGRESSIVE(p -> TiebreakMetrics.progressive(p), 1, "Progressive"),
-	FIDE_PERFORMANCE(p -> TiebreakMetrics.fidePerformance(p, Configuration.instance.getIterations()), 0, "FIDE Perf"),
+	FIDE_PERFORMANCE(p -> TiebreakMetrics.fidePerformance(p), 0, "FIDE Perf"),
 	SONNEBORN_BERGER(p -> TiebreakMetrics.sonnebornBerger(p), 1, "Sonneborn-Berger");
 	// @formatter:on
 	private static final Logger LOGGER = LogManager.getLogger(Tiebreaker.class);
@@ -68,7 +68,7 @@ class TiebreakMetrics {
 		return new BigDecimal(average).add(player.getScore().multiply(new BigDecimal(400))).add(new BigDecimal(-400));
 	}
 
-	public static BigDecimal fidePerformance(TournamentPlayer player, int iterations) {
+	public static BigDecimal fidePerformance(TournamentPlayer player) {
 
 		int[] dp = new int[] { 0, 7, 14, 21, 29, 36, 43, 50, 57, 65, 72, 80, 87, 95, 102, 110, 117, 125, 133, 141, 149,
 				158, 166, 175, 184, 193, 202, 211, 220, 230, 240, 251, 262, 273, 284, 296, 309, 322, 336, 351, 366, 383,

@@ -35,8 +35,6 @@ Track player Elo based on match outcomes.
 
 ```tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN> ```: Sets tiebreakers and order of priority.
 
-```iterations: <iterations>```: Set iterations for recursive performance tiebreaker.
-
 ```config: <configPath>```: Set path to config file for tiebreakers preferences (json format).
 
 ```example```: Runs an example tournament.

@@ -1,3 +1,4 @@
+
 ***********************************************************************************************************************
 *************************************** Welcome to the Swiss Tournament Manager! **************************************
 ***********************************************************************************************************************
@@ -31,8 +32,6 @@ if you added one or more players.
 - **tiebreakers: <tiebreaker1, tiebreaker2, ..., tiebreakerN>** : Sets the tiebreakers and the order of priority
 (fromthe left the most important and so on). Tiebreakers has to be always be specified in lower case an there is only
 support for sonneborn berger, recursive performance, black games, progressive, performance, elo and buchholz.
-
-- **iterations: <iterations>** : Set the number of iterations for the recursive performance tiebreaker.
 
 - **config: <configPath>** : Set the path of the config file that specifies tiebreakers preferences in json format.
 
@@ -133,16 +132,11 @@ this example:
 
 {
 	"tiebreakers": ["sonneborn berger", "linear performance", "black games"],
-	"iterations": 5
 }
-
-Keep in mind that the iterations must be indicated even if recursive performance is not used, but obviously they will
-be arbitrary filler data that will have no effect. A number of iterations is required, even if you do not use recursive
-performance, simply to cover all possible cases with the json structure.
 
 **Linear Performance
 
-It is the result of multiplying the player's score by 800, then adding the average elo of the rivals and then
+It is the result of multiplying the player's score by 400, then adding the average elo of the rivals and then
 subtracting 400.
 
 **FIDE Performance
@@ -180,8 +174,8 @@ different matches during the tournament. It benefits those who have beaten oppon
 average.
 
 **Default configuration
-If there is no specification for tiebreakers the default configuration is buchholz, black games, linear performance in that
-priority order.
+If there is no specification for tiebreakers the default configuration is buchholz, black games, linear performance in
+that priority order.
 
 *Version: 1.0.0-ALPHA
 

@@ -49,8 +49,6 @@ public class InputInterpreter {
 					+ "|elo, |linear performance, |progressive, |fide performance, |sonneborn berger, )*)"
 					+ "(?<end>black games|buchholz|elo|linear performance|progressive|fide performance|sonneborn berger)");
 
-	private static final Pattern ITERATIONS_PATTERN = Pattern.compile("iterations: (?<iterations>\\d{1,2})");
-
 	private static final Pattern CONFIG_PATTERN = Pattern.compile("(config: )(?<config>.+)");
 
 	private static final Pattern EXAMPLE_PATTERN = Pattern.compile("example");
@@ -103,11 +101,6 @@ public class InputInterpreter {
 			return Configuration.instance.toString();
 		});
 
-		MatcherExecutor iterations = new MatcherExecutor(ITERATIONS_PATTERN.matcher(input), matcher -> {
-			Configuration.instance.setIterations(Integer.parseInt(matcher.group("iterations")));
-			return Configuration.instance.toString();
-		});
-
 		MatcherExecutor example = new MatcherExecutor(EXAMPLE_PATTERN.matcher(input), matcher -> {
 			exampleTournament();
 			return "";
@@ -131,7 +124,7 @@ public class InputInterpreter {
 
 		return Stream
 				.of(player, outcome, start, currentRound, score, remove, enable, disqualify, redo, help, tiebreaker,
-						iterations, config, example)
+						 config, example)
 				.unordered().collect(StringBuilder::new, new Accumulator(), StringBuilder::append).toString();
 	}
 
@@ -163,9 +156,7 @@ public class InputInterpreter {
 		List<Tiebreaker> tiebreakers = IntStream.range(0, 2 + new Random().nextInt(2))
 				.mapToObj(i -> Tiebreaker.values()[new Random().nextInt(7)]).distinct()
 				.collect(Collectors.toCollection(LinkedList::new));
-		int iterations = 3 + new Random().nextInt(7);
 		Configuration.instance.setTiebreakers(tiebreakers);
-		Configuration.instance.setIterations(iterations);
 
 		List<TournamentPlayer> players = new PlayerFaker().createFakePlayers(45);
 		Tournament tournament = new Tournament();

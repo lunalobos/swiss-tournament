@@ -16,8 +16,8 @@ class ConfigurationTest {
 	void fromModel() {
 
 		String json = "{\r\n"
-				+ "	\"tiebreakers\": [\"sonneborn berger\", \"fide performance\", \"black games\"],\r\n"
-				+ "	\"iterations\": 5\r\n" + "}";
+				+ "	\"tiebreakers\": [\"sonneborn berger\", \"fide performance\", \"black games\"]\n"
+				+ "}";
 		ConfigModel model;
 		try {
 			model = new ObjectMapper().readValue(json, ConfigModel.class);

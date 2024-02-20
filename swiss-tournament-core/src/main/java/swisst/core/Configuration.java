@@ -19,28 +19,23 @@ public class Configuration {
 
 	public static Configuration defaultConfig() {
 		return new Configuration(
-				new LinkedList<>(Arrays.asList(Tiebreaker.BUCHHOLZ, Tiebreaker.BLACK_GAMES, Tiebreaker.LINEAR_PERFORMANCE)),
-				5);
+				new LinkedList<>(Arrays.asList(Tiebreaker.BUCHHOLZ, Tiebreaker.BLACK_GAMES, Tiebreaker.LINEAR_PERFORMANCE)));
 	}
 
 	public static Configuration fromModel(ConfigModel model) {
 		List<Tiebreaker> tiebreakers = model.getTiebreakers().stream().map(s -> Tiebreaker.get(s))
 				.filter(o -> o.isPresent()).map(o -> o.get()).collect(Collectors.toCollection(LinkedList::new));
 		LOGGER.trace(MsgFactory.getMessage("Tiebreakers from model: %s", tiebreakers));
-		LOGGER.trace(MsgFactory.getMessage("Iterations from model: %s", model.getIterations()));
-		return new Configuration(tiebreakers, model.getIterations());
+		return new Configuration(tiebreakers);
 	}
 
 	public static Configuration instance = defaultConfig();
 
 	private List<Tiebreaker> tiebreakers;
-	private int iterations;
 
-	public Configuration(List<Tiebreaker> tiebreakers, int iterations) {
+	public Configuration(List<Tiebreaker> tiebreakers) {
 		LOGGER.trace(MsgFactory.getMessage("Tiebreakers: %s", tiebreakers));
-		LOGGER.trace(MsgFactory.getMessage("Iterations: %s", iterations));
 		this.tiebreakers = tiebreakers;
-		this.iterations = iterations;
 	}
 
 	public Configuration() {
@@ -57,6 +52,6 @@ public class Configuration {
 		return new StringBuilder().append("Tiebreakers order:")
 				.append(tiebreakers.stream().map(t -> new StringBuilder("\n  ").append(t.getHeader()))
 						.collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString())
-				.append("\nIterations: ").append(iterations).toString();
+				.toString();
 	}
 }
