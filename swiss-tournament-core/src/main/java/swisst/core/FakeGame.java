@@ -5,6 +5,13 @@ import java.util.Optional;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * This class is used for those players who have not been able to be matched
+ * and get a point that does not count as a game or affect any tiebreaker score.
+ *
+ * @author lunalobos
+ */
+
 @Data
 public class FakeGame implements TournamentInstance {
 	@NonNull

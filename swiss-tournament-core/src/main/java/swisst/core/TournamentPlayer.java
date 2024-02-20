@@ -2,8 +2,11 @@ package swisst.core;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -18,10 +21,10 @@ public class TournamentPlayer implements Comparable<TournamentPlayer>, Serializa
 	private Integer currentElo;
 	private BigDecimal score;
 	private Integer blackScore;
-	private List<TournamentPlayer> against;
+	private Set<TournamentPlayer> against;
 	private boolean $active;
 	private List<BigDecimal> roundScores;
-	private List<Match> matches;
+	private Set<Match> matches;
 
 	public TournamentPlayer(String name, int initialElo) {
 		this.name = name;
@@ -29,10 +32,10 @@ public class TournamentPlayer implements Comparable<TournamentPlayer>, Serializa
 		currentElo = initialElo;
 		score = new BigDecimal(0);
 		blackScore = 0;
-		against = new LinkedList<>();
+		against = new HashSet<>();
 		$active = true;
 		roundScores = new LinkedList<>();
-		matches = new LinkedList<>();
+		matches = new HashSet<>();
 	}
 
 	public TournamentPlayer(Player player) {
@@ -41,10 +44,10 @@ public class TournamentPlayer implements Comparable<TournamentPlayer>, Serializa
 		currentElo = player.elo();
 		score = new BigDecimal(0);
 		blackScore = 0;
-		against = new LinkedList<>();
+		against = new HashSet<>();
 		$active = true;
 		roundScores = new LinkedList<>();
-		matches = new LinkedList<>();
+		matches = new HashSet<>();
 	}
 
 	public void acumulateScore() {
@@ -91,4 +94,20 @@ public class TournamentPlayer implements Comparable<TournamentPlayer>, Serializa
 	public void enable() {
 		$active = true;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof TournamentPlayer))
+			return false;
+		TournamentPlayer other = (TournamentPlayer) obj;
+		return Objects.equals(name, other.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
+
 }

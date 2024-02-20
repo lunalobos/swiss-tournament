@@ -12,14 +12,23 @@ import java.util.LinkedList;
 
 import lombok.Data;
 
+/**
+ * This class stores information about tiebreakers and provides static methods
+ * to create its own instances. The global instance used in the app is the
+ * static property {@code instance}. The main function of this class is to
+ * synthesize tiebreaker information into an instance of {@code
+ * Comparator<TorunamentPlayer>} that allows creating the player ranking.
+ *
+ * @author lunalobos
+ */
 @Data
 public class Configuration {
 
 	private static final Logger LOGGER = LogManager.getLogger(Configuration.class);
 
 	public static Configuration defaultConfig() {
-		return new Configuration(
-				new LinkedList<>(Arrays.asList(Tiebreaker.BUCHHOLZ, Tiebreaker.BLACK_GAMES, Tiebreaker.LINEAR_PERFORMANCE)));
+		return new Configuration(new LinkedList<>(
+				Arrays.asList(Tiebreaker.BUCHHOLZ, Tiebreaker.BLACK_GAMES, Tiebreaker.LINEAR_PERFORMANCE)));
 	}
 
 	public static Configuration fromModel(ConfigModel model) {
@@ -41,6 +50,13 @@ public class Configuration {
 	public Configuration() {
 	}
 
+	/**
+	 * This method synthesize tiebreaker information into an instance of {@code
+	 * Comparator<TorunamentPlayer>} that allows creating the player ranking.
+	 *
+	 * @return an instance of {@code Comparator<TorunamentPlayer>} that allows
+	 *         creating the player ranking
+	 */
 	public Comparator<TournamentPlayer> comparator() {
 		Comparator<TournamentPlayer> scoreComparator = (p1, p2) -> -p1.getScore().compareTo(p2.getScore());
 		return scoreComparator.thenComparing(tiebreakers.stream().map(t -> t.getComparator())

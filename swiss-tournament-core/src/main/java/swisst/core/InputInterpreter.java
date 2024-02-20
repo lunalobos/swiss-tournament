@@ -26,6 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * The function of this class is to interpret a sequence of characters as input
+ * and return the requested information and/or execute certain actions according
+ * to the command specification of this application.
+ *
+ * @author lunalobos
+ */
 @Data
 public class InputInterpreter {
 
@@ -65,6 +72,13 @@ public class InputInterpreter {
 	@NonNull
 	private Tournament tournament;
 
+	/**
+	 * The main method of this class reads the input provided by the injected
+	 * {@code BufferedReader} instance.
+	 *
+	 * @return the information requested
+	 * @throws IOException
+	 */
 	public String readInput() throws IOException {
 		String input = reader.readLine();
 		if (input == null || input.equals(""))
@@ -124,7 +138,7 @@ public class InputInterpreter {
 
 		return Stream
 				.of(player, outcome, start, currentRound, score, remove, enable, disqualify, redo, help, tiebreaker,
-						 config, example)
+						config, example)
 				.unordered().collect(StringBuilder::new, new Accumulator(), StringBuilder::append).toString();
 	}
 

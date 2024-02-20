@@ -7,6 +7,11 @@ import java.util.stream.IntStream;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * Represents a round in a tournament.
+ *
+ * @author lunalobos
+ */
 @Data
 public class Round implements Iterable<TournamentInstance> {
 	@NonNull

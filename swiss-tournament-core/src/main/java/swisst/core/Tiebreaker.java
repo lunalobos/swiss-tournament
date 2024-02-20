@@ -14,7 +14,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import lombok.Getter;
-
+/**
+ * This enum represents the tie-breaking systems supported by this application.
+ *
+ * @author lunalobos
+ */
 @Getter
 public enum Tiebreaker {
 	// @formatter:off

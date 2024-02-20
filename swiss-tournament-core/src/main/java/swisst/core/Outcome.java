@@ -3,7 +3,11 @@ package swisst.core;
 import java.math.BigDecimal;
 
 import lombok.Getter;
-
+/**
+ * This enum represents the different outcomes that a game can have.
+ *
+ * @author lunalobos
+ */
 @Getter
 public enum Outcome {
 	WW("1.0", "0.0", "1-0"), BW("0.0", "1.0", "0-1"), D("0.5", "0.5", "1/2-1/2"), IN_GAME("0.0", "0.0", "in game"),

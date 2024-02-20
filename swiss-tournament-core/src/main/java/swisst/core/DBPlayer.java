@@ -1,7 +1,11 @@
 package swisst.core;
 
 import java.io.Serializable;
-
+/**
+ * Class to model players and store them in a database.
+ *
+ * @author lunalobos
+ */
 public class DBPlayer implements Player, Serializable {
 
 	/**

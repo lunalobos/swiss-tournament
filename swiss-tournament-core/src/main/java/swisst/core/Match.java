@@ -6,6 +6,12 @@ import java.util.Optional;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * This implementation of {@code TournamentInstance} represents an actual game
+ * between two players.
+ *
+ * @author lunalobos
+ */
 @Data
 public class Match implements TournamentInstance {
 
@@ -34,7 +40,9 @@ public class Match implements TournamentInstance {
 	private TournamentPlayer black;
 
 	private Outcome $outcome;
-
+	/**
+	 * Sets the outcome of this match.
+	 */
 	@Override
 	public void play(Outcome outcome) {
 		$outcome = outcome;
@@ -43,13 +51,14 @@ public class Match implements TournamentInstance {
 			black.getAgainst().add(white);
 			black.addAsBlackGame();
 			calculateElo(white, black, outcome);
+			white.getMatches().add(this);
+			black.getMatches().add(this);
 		}
 		white.setScore(white.getScore().add(outcome.getWScore()));
 		black.setScore(black.getScore().add(outcome.getBScore()));
 		white.acumulateScore();
 		black.acumulateScore();
-		white.getMatches().add(this);
-		black.getMatches().add(this);
+
 	}
 
 	@Override

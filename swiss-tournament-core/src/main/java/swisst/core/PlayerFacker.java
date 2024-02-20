@@ -10,6 +10,13 @@ import com.github.javafaker.Faker;
 
 import lombok.Data;
 
+/**
+ * Fake player generator, utilizes the com.github.javafaker library under the
+ * hood. See the link {@link https://github.com/DiUS/java-faker} for more info
+ * on java-faker .
+ *
+ * @author lunalobos
+ */
 @Data
 class PlayerFaker {
 

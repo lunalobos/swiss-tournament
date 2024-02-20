@@ -1,4 +1,5 @@
 package swisst.core;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,20 +12,26 @@ import java.util.Optional;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * This repository implementation does not use a real database but rather a
+ * binary file containing a map with the names and elo of each player.
+ *
+ * @author lunalobos
+ */
 @Data
-public class MainPlayerRepository implements PlayerRepository{
+public class MainPlayerRepository implements PlayerRepository {
 
 	@SuppressWarnings("unchecked")
 	public static Optional<MainPlayerRepository> loadDB(String path) {
-		try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
-			return Optional.of(new MainPlayerRepository((Map<String,Player>)ois.readObject(),path));
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
+			return Optional.of(new MainPlayerRepository((Map<String, Player>) ois.readObject(), path));
 		} catch (IOException | ClassNotFoundException e) {
 			return Optional.empty();
 		}
 	}
 
 	@NonNull
-	private Map<String,Player> players;
+	private Map<String, Player> players;
 	@NonNull
 	private String path;
 
@@ -34,13 +41,13 @@ public class MainPlayerRepository implements PlayerRepository{
 	}
 
 	@Override
-	public boolean save(Player... players) throws IOException{
-		Arrays.asList(players).stream().forEach(p -> this.players.put(p.name(), p));;
+	public boolean save(Player... players) throws IOException {
+		Arrays.asList(players).stream().forEach(p -> this.players.put(p.name(), p));
+		;
 		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(path));
 		oos.writeObject(this.players);
 		oos.close();
 		return true;
 	}
-
 
 }

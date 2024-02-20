@@ -24,6 +24,12 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+/**
+ * This class represents a Swiss-style chess tournament. It manages players,
+ * rounds, games, and standings.
+ *
+ * @author lunalobos
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -36,16 +42,32 @@ public class Tournament {
 	private List<Round> $rounds;
 	private PriorityQueue<TournamentPlayer> players;
 
+	/**
+	 * Creates a new tournament with an empty list of players and no rounds played.
+	 */
 	public Tournament() {
 		this.players = new PriorityQueue<>();
 		$rounds = new LinkedList<>();
 		$names = new HashMap<>();
 	}
 
+	/**
+	 * Updates the standings based on the results of the last round.
+	 *
+	 * @return true if the tournament is finished, false otherwise
+	 */
 	public boolean update() {
 		return $rounds.getLast().update().isComplete();
 	}
 
+	/**
+	 * Adds the outcome of a game to the current round.
+	 *
+	 * @param whiteName
+	 * @param blackName
+	 * @param outcome
+	 * @return this tournament string representation
+	 */
 	public String addGameOutcome(String whiteName, String blackName, Outcome outcome) {
 		if ($rounds.isEmpty())
 			return "The game has not started.";
@@ -62,6 +84,12 @@ public class Tournament {
 		return this.toString();
 	}
 
+	/**
+	 * Adds a collection of players to the tournament.
+	 *
+	 * @param newCommers
+	 * @return this tournament string representation
+	 */
 	public String addPlayers(Collection<TournamentPlayer> newCommers) {
 		newCommers.stream().forEach(nc -> {
 			players.add(nc);
@@ -70,6 +98,12 @@ public class Tournament {
 		return this.toString();
 	}
 
+	/**
+	 * Adds an array of players to the tournament.
+	 *
+	 * @param newComers
+	 * @return this tournament string representation
+	 */
 	public String addPlayers(TournamentPlayer... newComers) {
 		Arrays.stream(newComers).forEach(nc -> {
 			players.add(nc);
@@ -78,6 +112,12 @@ public class Tournament {
 		return this.toString();
 	}
 
+	/**
+	 * Removes a player from the tournament.
+	 *
+	 * @param playerName
+	 * @return this tournament string representation
+	 */
 	public String removePlayer(String playerName) {
 		if ($rounds.size() == 0) {
 			Optional.ofNullable($names.get(playerName)).ifPresent(p -> $names.remove(playerName, p));
@@ -86,6 +126,11 @@ public class Tournament {
 		return this.toString();
 	}
 
+	/**
+	 * Starts the first round of the tournament.
+	 *
+	 * @return a string representation of the round
+	 */
 	public String firstRound() {
 		numberOfRounds = (int) (Math.log($names.keySet().size()) / Math.log(2)) + $names.keySet().size() % 2;
 		refreshQueue();
@@ -108,6 +153,11 @@ public class Tournament {
 		return $rounds.getLast().toString();
 	}
 
+	/**
+	 * Starts the next round of the tournament.
+	 *
+	 * @return a string representation of the round
+	 */
 	public String nextRound() {
 		LOGGER.traceEntry("nextRound");
 		if (off())
@@ -155,32 +205,67 @@ public class Tournament {
 		return LOGGER.traceExit($rounds.getLast().toString());
 	}
 
+	/**
+	 * Redoes the last round of the tournament.
+	 *
+	 * @return a string representation of the redone round
+	 */
 	public String redoLastRound() {
 		$rounds.removeLast();
 		return nextRound();
 	}
 
+	/**
+	 * Updates the priority queue of players based on their current scores.
+	 */
 	public void refreshQueue() {
 		players.clear();
 		$names.entrySet().stream().filter(e -> e.getValue().isActive()).forEach(e -> players.add(e.getValue()));
 	}
 
+	/**
+	 * Returns a string representation of the last round.
+	 *
+	 * @return a string representation of the last round
+	 */
 	public String lastRound() {
 		return $rounds.getLast().toString();
 	}
 
+	/**
+	 * Indicates if the tournament is finished.
+	 *
+	 * @return true if the tournament is finished, false otherwise
+	 */
 	public boolean off() {
 		return numberOfRounds != 0 && $rounds.size() == numberOfRounds && $rounds.getLast().isComplete();
 	}
 
+	/**
+	 * Returns an optional containing the player with the given name, or an empty
+	 * {@code Optional} if the player is not found.
+	 *
+	 * @param name
+	 * @return an optional containing the player with the given name, or an empty
+	 *         {@code Optional} if the player is not found
+	 */
 	public Optional<TournamentPlayer> seekPlayer(String name) {
 		return Optional.ofNullable($names.get(name));
 	}
 
+	/**
+	 * Returns the current round of the tournament.
+	 *
+	 * @return the current round of the tournament
+	 */
 	public Round currentRound() {
 		return $rounds.getLast();
 	}
 
+	/**
+	 * Returns a string representation of the tournament, including the number of
+	 * rounds, the players' standings, and the results of the completed rounds.
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder().append("\n");
