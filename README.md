@@ -60,14 +60,32 @@ New players and completed tournaments create/save the database.
 Multiple supported systems with configurable priority order.
 Options include Black Games, Buchholz, Elo, Linear Performance, Progressive, FIDE Performance, and Sonneborn-Berger.
 Specify priority with tiebreakers command or a JSON configuration file.
+In order to properly set the tiebreakers you have to type the tibreakers names like it's shown in this example:
+
+´´´console
+tiebreakers: sonneborn berger, buchholz, progressive, black games, fide performance, linear performance, elo
+´´´
+
+You should see this respond by the app:
+
+´´´console
+Tiebreakers order:
+  Sonneborn-Berger
+  Buchholz
+  Progressive
+  Black Games
+  FIDE Perf
+  Linear Perf
+  Elo
+´´´
 
 ## Prerequisites
 To use the app, you need Java 21 and Maven 3.9.6. If you don't have them installed, you can follow these steps:
 
 ### Installing Java:
 
-Visit the official [OpenJDK JDK 21.0.2 download page](https://jdk.java.net/21/). 
-Click the Download button for your operating system.
+Visit [Java 21 Semeru JVM download page](https://developer.ibm.com/languages/java/semeru-runtimes/downloads/). 
+Select your operating system and download the JDK version.
 
 Once the download is complete unzip the file an put this jdk folder sowhere on your computer. 
 
@@ -78,15 +96,18 @@ Also you have to create the JAVA_HOME variable with the path to the jdk folder i
 To checkout if your instalation was correct execut this command
 
 ```console
-java --version
+java -version
 ```
 
 You would see something like this
 
 ```console
-openjdk 21.0.2 2024-01-16
-OpenJDK Runtime Environment (build 21.0.2+13-58)
-OpenJDK 64-Bit Server VM (build 21.0.2+13-58, mixed mode, sharing)
+openjdk version "21.0.6" 2025-01-21 LTS
+IBM Semeru Runtime Open Edition 21.0.6.0 (build 21.0.6+7-LTS)
+Eclipse OpenJ9 VM 21.0.6.0 (build openj9-0.49.0, JRE 21 Windows 10 amd64-64-Bit Compressed References 20250121_374 (JIT enabled, AOT enabled)
+OpenJ9   - 3c3d179854
+OMR      - e49875871
+JCL      - e01368f00df based on jdk-21.0.6+7)
 ```
 
 ### Installing Maven:
@@ -102,6 +123,7 @@ Create the MAVEN_HOME variable with the path to the Maven folder.
 
 Clone this repository from a command window and run:
 ```console
+cd <your git repositories location>/swiss-tournament/swiss-tournament-core
 mvn clean package
 ```
 Wait for the project to compile. Then run:
