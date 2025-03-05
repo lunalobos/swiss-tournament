@@ -62,13 +62,13 @@ Options include Black Games, Buchholz, Elo, Linear Performance, Progressive, FID
 Specify priority with tiebreakers command or a JSON configuration file.
 In order to properly set the tiebreakers you have to type the tibreakers names like it's shown in this example:
 
-´´´console
+```console
 tiebreakers: sonneborn berger, buchholz, progressive, black games, fide performance, linear performance, elo
-´´´
+```
 
 You should see this respond by the app:
 
-´´´console
+```console
 Tiebreakers order:
   Sonneborn-Berger
   Buchholz
@@ -77,7 +77,7 @@ Tiebreakers order:
   FIDE Perf
   Linear Perf
   Elo
-´´´
+```
 
 ## Prerequisites
 To use the app, you need Java 21 and Maven 3.9.6. If you don't have them installed, you can follow these steps:
